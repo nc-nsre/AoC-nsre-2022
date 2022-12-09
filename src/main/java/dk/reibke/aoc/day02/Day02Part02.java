@@ -8,12 +8,12 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class Day02Part01 {
+public class Day02Part02 {
 
     public static void main(String[] args) throws IOException, URISyntaxException {
         Stream<String> lines = new FileReader().streamFile("day02/part01");
 
-        Day02Part01 day02Part01 = new Day02Part01();
+        Day02Part02 day02Part01 = new Day02Part02();
         List<Round> allRounds = day02Part01.createAllRounds(lines);
         int totalScore = day02Part01.getTotalScore(allRounds);
 
@@ -33,9 +33,9 @@ public class Day02Part01 {
         String[] splitLine = line.split(" ");
 
         Choice opponentChoice = Choice.getChoiceFromLetter(splitLine[0]);
-        Choice myChoice = Choice.getChoiceFromLetter(splitLine[1]);
+        MatchScore matchScore = MatchScore.getMatchScoreFromLetter(splitLine[1]);
 
-        return new Round(opponentChoice, myChoice);
+        return new Round(opponentChoice, matchScore);
     }
 
     public int getTotalScore(List<Round> rounds) {
@@ -49,18 +49,22 @@ public class Day02Part01 {
     public static class Round {
 
         private final Choice opponentChoice;
-        private final Choice myChoice;
+        private final MatchScore matchScore;
 
-        public Round(Choice opponentChoice, Choice myChoice) {
+        public Round(Choice opponentChoice, MatchScore matchScore) {
             this.opponentChoice = opponentChoice;
-            this.myChoice = myChoice;
+            this.matchScore = matchScore;
         }
 
         public int getScore() {
-            int choiceScore = this.myChoice.getScore();
-            int matchPoint = myChoice.getMatchScore(opponentChoice).getMatchPoints();
+            Choice choice = opponentChoice.getChoiceToMatchResult(this.matchScore);
 
-            return choiceScore + matchPoint;
+            int choiceScore = choice.getScore();
+            int matchScore = this.matchScore.getMatchPoints();
+
+            return choiceScore + matchScore;
         }
+
     }
+
 }

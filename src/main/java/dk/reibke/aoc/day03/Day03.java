@@ -2,6 +2,7 @@ package dk.reibke.aoc.day03;
 
 import dk.reibke.aoc.FileReader;
 import dk.reibke.aoc.StreamUtility;
+import dk.reibke.aoc.Tuple;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -105,8 +106,6 @@ public class Day03 {
                     '}';
         }
     }
-
-    public static record Tuple<T>(T A, T B){}
 
     public static class RuckSack {
         private final Compartment compartment1;

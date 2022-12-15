@@ -1,5 +1,6 @@
 package dk.reibke.aoc.day03;
 
+import dk.reibke.aoc.Tuple;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -42,7 +43,7 @@ class Day03Test {
     @ParameterizedTest
     @MethodSource("lineAndExpectedPriority")
     public void testIndividualRucksackOddPriority(String line, int expectedPriority, Character expectedCharacter) {
-        Day03.Tuple<List<Character>> tuple = Day03.splitLineToCharacterLists(line);
+        Tuple<List<Character>> tuple = Day03.splitLineToCharacterLists(line);
         Day03.RuckSack ruckSack = Day03.RuckSack.createFromCharacterListsTuples(tuple);
 
         Day03.Item actualItem = ruckSack.getOddPriorityItem();
@@ -71,7 +72,7 @@ class Day03Test {
     public void testSplitLineToCharacterLists() {
         String line = "vJrwpWtwJgWrhcsFMMfFFhFp";
         Day03 day03 = new Day03();
-        Day03.Tuple<List<Character>> lists = day03.splitLineToCharacterLists(line);
+        Tuple<List<Character>> lists = day03.splitLineToCharacterLists(line);
 
         Assertions.assertEquals("vJrwpWtwJgWr".chars().mapToObj(c -> (char) c).toList(), lists.A());
         Assertions.assertEquals("hcsFMMfFFhFp".chars().mapToObj(c -> (char) c).toList(), lists.B());
@@ -81,7 +82,7 @@ class Day03Test {
     public void testAllItems() {
         String line = "vJrwpWtwJgWrhcsFMMfFFhFp";
         Day03 day03 = new Day03();
-        Day03.Tuple<List<Character>> tuple = day03.splitLineToCharacterLists(line);
+        Tuple<List<Character>> tuple = day03.splitLineToCharacterLists(line);
         Day03.RuckSack ruckSack = new Day03.RuckSack(
                 new Day03.Compartment(tuple.A()), new Day03.Compartment(tuple.B()));
 
@@ -93,7 +94,7 @@ class Day03Test {
     public void testCommonItem() {
         String line = "vJrwpWtwJgWrhcsFMMfFFhFp";
         Day03 day03 = new Day03();
-        Day03.Tuple<List<Character>> tuple = day03.splitLineToCharacterLists(line);
+        Tuple<List<Character>> tuple = day03.splitLineToCharacterLists(line);
         Day03.Compartment A = new Day03.Compartment(tuple.A());
         Day03.Compartment B = new Day03.Compartment(tuple.B());
 

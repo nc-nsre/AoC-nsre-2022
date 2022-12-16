@@ -23,12 +23,17 @@ public class Day05Part01 {
 
         Tuple<List<String>> inputs = getInputs(iterator);
 
-        GiantCargoCrane crane = GiantCargoCrane.fromLines(inputs.A());
+        GiantCargoCrane9000 crane = GiantCargoCrane9000.fromLines(inputs.A());
         List<CraneCrateMove> craneCrateMoves = CraneCrateMove.fromLines(inputs.B());
 
         craneCrateMoves.forEach(crane::moveCrates);
-
         System.out.println(crane.getTopCratesAsString());
+
+        GiantCargoCrane9001 upgradedCrane = new GiantCargoCrane9001(GiantCargoCrane9000.fromLines(inputs.A()));
+
+        craneCrateMoves.forEach(upgradedCrane::moveCrates);
+        System.out.println(upgradedCrane.getTopCratesAsString());
+
     }
 
     public static Tuple<List<String>> getInputs(Iterator<String> lines) {
@@ -105,10 +110,36 @@ public class Day05Part01 {
         }
     }
 
-    public static class GiantCargoCrane {
-        private final List<Stack> stacks;
+    public static class GiantCargoCrane9001 extends GiantCargoCrane9000 {
 
-        public GiantCargoCrane(List<Stack> stacks) {
+        public GiantCargoCrane9001(GiantCargoCrane9000 oldCrane) {
+            super(oldCrane.stacks);
+        }
+
+        @Override
+        public void moveCrates(CraneCrateMove craneCrateMove) {
+            LinkedList<Crate> grabbedCrates = pickCrates(craneCrateMove);
+
+            while(!grabbedCrates.isEmpty()) {
+                this.stacks.get(craneCrateMove.getTo()).putCrate(grabbedCrates.removeLast());
+            }
+        }
+
+        private LinkedList<Crate> pickCrates(CraneCrateMove craneCrateMove) {
+            LinkedList<Crate> grabbedCrates = new LinkedList<>();
+            for (int i = 0; i < craneCrateMove.getAmount(); i++) {
+                grabbedCrates.add(this.stacks.get(craneCrateMove.getFrom()).pickFromTop());
+            }
+            return grabbedCrates;
+        }
+    }
+
+    public static class GiantCargoCrane9000 {
+        public static final int LINE_STACK_BETWEEN_DISTANCE = 4;
+        public static final int INITIAL_LETTER_OFFSET = 1;
+        protected final List<Stack> stacks;
+
+        public GiantCargoCrane9000(List<Stack> stacks) {
             this.stacks = stacks;
         }
 
@@ -135,7 +166,7 @@ public class Day05Part01 {
             }
         }
 
-        public static GiantCargoCrane fromLines(List<String> lines) {
+        public static GiantCargoCrane9000 fromLines(List<String> lines) {
             LinkedList<String> list = new LinkedList<>(lines);
             String stackNumberLine = list.removeLast();
             int stacks = stackCount(stackNumberLine);
@@ -147,7 +178,7 @@ public class Day05Part01 {
 
             while(!list.isEmpty()) {
                 String line = list.removeLast();
-                for (int i = 0; 1 + i * 4 < line.length(); i++) {
+                for (int i = 0; INITIAL_LETTER_OFFSET + i * LINE_STACK_BETWEEN_DISTANCE < line.length(); i++) {
                     char letter = line.charAt(1 + i * 4);
                     if (Character.isLetter(letter)) {
                         stackCrates.get(i).add(new Crate(letter));
@@ -159,7 +190,7 @@ public class Day05Part01 {
                     .map(Stack::new)
                     .toList();
 
-            return new GiantCargoCrane(stackList);
+            return new GiantCargoCrane9000(stackList);
         }
 
         public static int stackCount(String stackNumberLine) {

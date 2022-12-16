@@ -8,29 +8,28 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import javax.swing.plaf.basic.BasicInternalFrameTitlePane;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Stream;
 
 import static dk.reibke.aoc.day05.Day05Part01.getInputs;
-import static org.junit.jupiter.api.Assertions.*;
 
 class Day05Part01Test {
 
     @Test
     public void testInitialStructure() {
-        Day05Part01.GiantCargoCrane crane = generateData();
+        Day05Part01.GiantCargoCrane9000 crane = generateData();
 
         Assertions.assertEquals(List.of('N', 'D', 'P'), crane.getTopCrates().stream().map(Day05Part01.Crate::getLetter).toList());
     }
 
     @Test
     public void testFirstMove() {
-        Day05Part01.GiantCargoCrane crane = generateData();
+        Day05Part01.GiantCargoCrane9000 crane = generateData();
 
         crane.moveCrates(new Day05Part01.CraneCrateMove(1,2,1));
 
@@ -39,7 +38,7 @@ class Day05Part01Test {
 
     @Test
     public void testSecondMove() {
-        Day05Part01.GiantCargoCrane crane = generateData();
+        Day05Part01.GiantCargoCrane9000 crane = generateData();
 
         crane.moveCrates(new Day05Part01.CraneCrateMove(1,2,1));
         crane.moveCrates(new Day05Part01.CraneCrateMove(3,1,3));
@@ -60,7 +59,7 @@ class Day05Part01Test {
 
         Tuple<List<String>> inputs = getInputs(iterator);
 
-        Day05Part01.GiantCargoCrane crane = Day05Part01.GiantCargoCrane.fromLines(inputs.A());
+        Day05Part01.GiantCargoCrane9000 crane = Day05Part01.GiantCargoCrane9000.fromLines(inputs.A());
         List<Day05Part01.CraneCrateMove> craneCrateMoves = Day05Part01.CraneCrateMove.fromLines(inputs.B());
 
         craneCrateMoves.forEach(crane::moveCrates);
@@ -82,8 +81,20 @@ class Day05Part01Test {
         Stream<String> lines = new FileReader().streamFile("day05/part01");
         Tuple<List<String>> inputs = getInputs(lines.iterator());
 
-        Day05Part01.GiantCargoCrane crane = Day05Part01.GiantCargoCrane.fromLines(inputs.A());
+        Day05Part01.GiantCargoCrane9000 crane = Day05Part01.GiantCargoCrane9000.fromLines(inputs.A());
         Assertions.assertEquals(List.of('N', 'D', 'P'), crane.getTopCrates().stream().map(Day05Part01.Crate::getLetter).toList());
+    }
+
+    @Test
+    public void testCrane9001FinalStructure() throws IOException, URISyntaxException {
+        Stream<String> lines = new FileReader().streamFile("day05/part01");
+        Tuple<List<String>> inputs = getInputs(lines.iterator());
+
+        Day05Part01.GiantCargoCrane9000 crane = Day05Part01.GiantCargoCrane9000.fromLines(inputs.A());
+        Day05Part01.GiantCargoCrane9001 upgradedCrane = new Day05Part01.GiantCargoCrane9001(crane);
+
+        Day05Part01.CraneCrateMove.fromLines(inputs.B()).forEach(upgradedCrane::moveCrates);
+        Assertions.assertEquals(List.of('M', 'C', 'D'), upgradedCrane.getTopCrates().stream().map(Day05Part01.Crate::getLetter).toList());
     }
 
     public static Stream<Arguments> getMovements() {
@@ -103,10 +114,10 @@ class Day05Part01Test {
 
     @Test
     public void testStackCountLine() {
-        Assertions.assertEquals(3, Day05Part01.GiantCargoCrane.stackCount(" 1   2   3"));
+        Assertions.assertEquals(3, Day05Part01.GiantCargoCrane9000.stackCount(" 1   2   3"));
     }
 
-    private Day05Part01.GiantCargoCrane generateData() {
+    private Day05Part01.GiantCargoCrane9000 generateData() {
         Day05Part01.Stack stack1 = new Day05Part01.Stack(List.of(
                 new Day05Part01.Crate('Z'),
                 new Day05Part01.Crate('N')
@@ -120,7 +131,7 @@ class Day05Part01Test {
                 new Day05Part01.Crate('P')
         ));
 
-        Day05Part01.GiantCargoCrane crane = new Day05Part01.GiantCargoCrane(new ArrayList<>(List.of(
+        Day05Part01.GiantCargoCrane9000 crane = new Day05Part01.GiantCargoCrane9000(new ArrayList<>(List.of(
                 stack1,
                 stack2,
                 stack3

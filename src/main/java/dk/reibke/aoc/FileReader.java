@@ -1,5 +1,6 @@
 package dk.reibke.aoc;
 
+import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -12,11 +13,21 @@ import java.util.stream.Stream;
 public class FileReader {
 
     public Stream<String> streamFile(String path) throws IOException, URISyntaxException {
+        Path filePath = getPath(path);
+        return Files.lines(filePath);
+    }
+
+    public BufferedReader streamFileAsReader(String path) throws IOException, URISyntaxException {
+        Path filePath = getPath(path);
+        return Files.newBufferedReader(filePath);
+    }
+
+    private Path getPath(String path) throws FileNotFoundException, URISyntaxException {
         URL resource = this.getClass().getClassLoader().getResource(path);
         if (resource == null) {
             throw new FileNotFoundException("Unable to find: " + path);
         }
         Path filePath = Paths.get(resource.toURI());
-        return Files.lines(filePath);
+        return filePath;
     }
 }

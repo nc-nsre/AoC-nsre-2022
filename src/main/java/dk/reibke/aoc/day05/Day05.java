@@ -15,7 +15,7 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class Day05Part01 {
+public class Day05 {
 
     public static void main(String[] args) throws IOException, URISyntaxException {
         Stream<String> lines = new FileReader().streamFile("day05/part01");

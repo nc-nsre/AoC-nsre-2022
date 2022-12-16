@@ -8,7 +8,6 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
-import javax.swing.plaf.basic.BasicInternalFrameTitlePane;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
@@ -16,32 +15,32 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Stream;
 
-import static dk.reibke.aoc.day05.Day05Part01.getInputs;
+import static dk.reibke.aoc.day05.Day05.getInputs;
 
-class Day05Part01Test {
+class Day05Test {
 
     @Test
     public void testInitialStructure() {
-        Day05Part01.GiantCargoCrane9000 crane = generateData();
+        Day05.GiantCargoCrane9000 crane = generateData();
 
-        Assertions.assertEquals(List.of('N', 'D', 'P'), crane.getTopCrates().stream().map(Day05Part01.Crate::getLetter).toList());
+        Assertions.assertEquals(List.of('N', 'D', 'P'), crane.getTopCrates().stream().map(Day05.Crate::getLetter).toList());
     }
 
     @Test
     public void testFirstMove() {
-        Day05Part01.GiantCargoCrane9000 crane = generateData();
+        Day05.GiantCargoCrane9000 crane = generateData();
 
-        crane.moveCrates(new Day05Part01.CraneCrateMove(1,2,1));
+        crane.moveCrates(new Day05.CraneCrateMove(1,2,1));
 
-        Assertions.assertEquals(List.of('D', 'C', 'P'), crane.getTopCrates().stream().map(Day05Part01.Crate::getLetter).toList());
+        Assertions.assertEquals(List.of('D', 'C', 'P'), crane.getTopCrates().stream().map(Day05.Crate::getLetter).toList());
     }
 
     @Test
     public void testSecondMove() {
-        Day05Part01.GiantCargoCrane9000 crane = generateData();
+        Day05.GiantCargoCrane9000 crane = generateData();
 
-        crane.moveCrates(new Day05Part01.CraneCrateMove(1,2,1));
-        crane.moveCrates(new Day05Part01.CraneCrateMove(3,1,3));
+        crane.moveCrates(new Day05.CraneCrateMove(1,2,1));
+        crane.moveCrates(new Day05.CraneCrateMove(3,1,3));
 
         Assertions.assertEquals(List.of("_", 'C', 'Z'), crane.getTopCrates().stream()
                 .map(crate -> {
@@ -59,8 +58,8 @@ class Day05Part01Test {
 
         Tuple<List<String>> inputs = getInputs(iterator);
 
-        Day05Part01.GiantCargoCrane9000 crane = Day05Part01.GiantCargoCrane9000.fromLines(inputs.A());
-        List<Day05Part01.CraneCrateMove> craneCrateMoves = Day05Part01.CraneCrateMove.fromLines(inputs.B());
+        Day05.GiantCargoCrane9000 crane = Day05.GiantCargoCrane9000.fromLines(inputs.A());
+        List<Day05.CraneCrateMove> craneCrateMoves = Day05.CraneCrateMove.fromLines(inputs.B());
 
         craneCrateMoves.forEach(crane::moveCrates);
 
@@ -81,8 +80,8 @@ class Day05Part01Test {
         Stream<String> lines = new FileReader().streamFile("day05/part01");
         Tuple<List<String>> inputs = getInputs(lines.iterator());
 
-        Day05Part01.GiantCargoCrane9000 crane = Day05Part01.GiantCargoCrane9000.fromLines(inputs.A());
-        Assertions.assertEquals(List.of('N', 'D', 'P'), crane.getTopCrates().stream().map(Day05Part01.Crate::getLetter).toList());
+        Day05.GiantCargoCrane9000 crane = Day05.GiantCargoCrane9000.fromLines(inputs.A());
+        Assertions.assertEquals(List.of('N', 'D', 'P'), crane.getTopCrates().stream().map(Day05.Crate::getLetter).toList());
     }
 
     @Test
@@ -90,11 +89,11 @@ class Day05Part01Test {
         Stream<String> lines = new FileReader().streamFile("day05/part01");
         Tuple<List<String>> inputs = getInputs(lines.iterator());
 
-        Day05Part01.GiantCargoCrane9000 crane = Day05Part01.GiantCargoCrane9000.fromLines(inputs.A());
-        Day05Part01.GiantCargoCrane9001 upgradedCrane = new Day05Part01.GiantCargoCrane9001(crane);
+        Day05.GiantCargoCrane9000 crane = Day05.GiantCargoCrane9000.fromLines(inputs.A());
+        Day05.GiantCargoCrane9001 upgradedCrane = new Day05.GiantCargoCrane9001(crane);
 
-        Day05Part01.CraneCrateMove.fromLines(inputs.B()).forEach(upgradedCrane::moveCrates);
-        Assertions.assertEquals(List.of('M', 'C', 'D'), upgradedCrane.getTopCrates().stream().map(Day05Part01.Crate::getLetter).toList());
+        Day05.CraneCrateMove.fromLines(inputs.B()).forEach(upgradedCrane::moveCrates);
+        Assertions.assertEquals(List.of('M', 'C', 'D'), upgradedCrane.getTopCrates().stream().map(Day05.Crate::getLetter).toList());
     }
 
     public static Stream<Arguments> getMovements() {
@@ -109,29 +108,29 @@ class Day05Part01Test {
     @ParameterizedTest
     @MethodSource("getMovements")
     public void testOperationsInput(String line, int amount, int from, int to) {
-        Assertions.assertEquals(new Day05Part01.CraneCrateMove(amount,from,to), Day05Part01.CraneCrateMove.fromLine(line));
+        Assertions.assertEquals(new Day05.CraneCrateMove(amount,from,to), Day05.CraneCrateMove.fromLine(line));
     }
 
     @Test
     public void testStackCountLine() {
-        Assertions.assertEquals(3, Day05Part01.GiantCargoCrane9000.stackCount(" 1   2   3"));
+        Assertions.assertEquals(3, Day05.GiantCargoCrane9000.stackCount(" 1   2   3"));
     }
 
-    private Day05Part01.GiantCargoCrane9000 generateData() {
-        Day05Part01.Stack stack1 = new Day05Part01.Stack(List.of(
-                new Day05Part01.Crate('Z'),
-                new Day05Part01.Crate('N')
+    private Day05.GiantCargoCrane9000 generateData() {
+        Day05.Stack stack1 = new Day05.Stack(List.of(
+                new Day05.Crate('Z'),
+                new Day05.Crate('N')
         ));
-        Day05Part01.Stack stack2 = new Day05Part01.Stack(List.of(
-                new Day05Part01.Crate('M'),
-                new Day05Part01.Crate('C'),
-                new Day05Part01.Crate('D')
+        Day05.Stack stack2 = new Day05.Stack(List.of(
+                new Day05.Crate('M'),
+                new Day05.Crate('C'),
+                new Day05.Crate('D')
         ));
-        Day05Part01.Stack stack3 = new Day05Part01.Stack(List.of(
-                new Day05Part01.Crate('P')
+        Day05.Stack stack3 = new Day05.Stack(List.of(
+                new Day05.Crate('P')
         ));
 
-        Day05Part01.GiantCargoCrane9000 crane = new Day05Part01.GiantCargoCrane9000(new ArrayList<>(List.of(
+        Day05.GiantCargoCrane9000 crane = new Day05.GiantCargoCrane9000(new ArrayList<>(List.of(
                 stack1,
                 stack2,
                 stack3

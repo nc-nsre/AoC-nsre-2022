@@ -1,7 +1,7 @@
 package dk.reibke.aoc.day03;
 
 import dk.reibke.aoc.FileReader;
-import dk.reibke.aoc.StreamUtility;
+import dk.reibke.aoc.CollectionUtility;
 import dk.reibke.aoc.Tuple;
 
 import java.io.IOException;
@@ -92,7 +92,7 @@ public class Day03 {
         public static List<Group> createGroups(Stream<String> lines, int groupSizes) {
             return lines.map(Day03::splitLineToCharacterLists)
                     .map(RuckSack::createFromCharacterListsTuples)
-                    .collect(StreamUtility.partionCollector(groupSizes))
+                    .collect(CollectionUtility.partionCollector(groupSizes))
                     .stream()
                     .map(Group::new)
                     .toList();

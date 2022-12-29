@@ -1,7 +1,7 @@
 package dk.reibke.aoc.day07;
 
 import dk.reibke.aoc.FileReader;
-import dk.reibke.aoc.StreamUtility;
+import dk.reibke.aoc.CollectionUtility;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -119,7 +119,7 @@ public class Day07 {
         );
 
         public List<List<String>> partition(Stream<String> lines) {
-            return lines.collect(StreamUtility.partionOnFilter((blockStep -> LineType.inferType(blockStep.step()) == LineType.Command)));
+            return lines.collect(CollectionUtility.partionOnFilter((blockStep -> LineType.inferType(blockStep.step()) == LineType.Command)));
         }
 
         public Directory generateStructure(Stream<String> lines) {
